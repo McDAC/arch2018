@@ -4,7 +4,7 @@ read -p "Введите имя пользователя: " username
 
 echo 'Прописываем имя компьютера'
 echo $hostname > /etc/hostname
-ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+ln -svf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 
 echo '3.4 Добавляем русскую локаль системы'
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -62,25 +62,12 @@ fi
 echo 'Ставим иксы и драйвера'
 pacman -S $gui_install
 
-echo "Какое DE ставим?"
-read -p "1 - XFCE, 2 - KDE, 3 - Openbox: " vm_setting
-if [[ $vm_setting == 1 ]]; then
-  pacman -S xfce4 xfce4-goodies --noconfirm
-elif [[ $vm_setting == 2 ]]; then
-  pacman -Sy plasma-meta kdebase --noconfirm
-elif [[ $vm_setting == 3 ]]; then  
-  pacman -S  openbox xfce4-terminal
-fi
+echo "Ставим XFCE"
+pacman -S xfce4 xfce4-goodies --noconfirm
 
-echo 'Какой ставим DM ?'
-read -p "1 - sddm (Для Openbox не ставить, нет выбора пользователя), 2 - lxdm: " dm_setting
-if [[ $dm_setting == 1 ]]; then
-  pacman -Sy sddm sddm-kcm --noconfirm
-  systemctl enable sddm.service -f
-elif [[ $dm_setting == 2 ]]; then
-  pacman -S lxdm --noconfirm
-  systemctl enable lxdm
-fi
+echo 'Cтавим DM'
+pacman -S lxdm --noconfirm
+systemctl enable lxdm
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu --noconfirm 
